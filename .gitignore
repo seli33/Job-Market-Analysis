@@ -1,0 +1,57 @@
+# Virtual Environment
+venv/
+env/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Data files (raw and processed - can be large)
+data/raw/
+data/processed/
+*.csv
+*.json
+*.xlsx
+
+# Database
+*.sql.bak
+*.db
+*.sqlite
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Power BI temp files
+*.pbix.bak
+
+# Airflow
+airflow/logs/
+airflow/plugins/
+airflow.cfg
+airflow.db
+
+# Docker
+.dockerenv
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
