@@ -8,7 +8,7 @@ HEADERS={
 }
 
 def inspect():
-    url="https://www.kumarijob.com/search"
+    url="https://www.kumarijob.com/jobs-in-nepal/ittelecommunication-jobs-in-nepal"
     response=requests.get(url,headers=HEADERS)
 
     print("status code :",response.status_code)
@@ -23,7 +23,11 @@ def inspect():
     print("\n--- DIV CLASS NAMES (first 40) ---")
     for div in soup.find_all("div", class_=True)[:40]:
         print(div.get("class"))
-    
+
+    # Check if h3 clearfix exists here
+    h3_cards = soup.find_all("h3", class_="clearfix")
+    print(f"h3 clearfix found: {len(h3_cards)}")
+        
     print("\n--- ALL ANCHOR TAGS WITH HREF (first 20) ---")
     for a in soup.find_all("a", href=True)[:20]:
         print(a.get("href"), "|", a.text.strip()[:50])
