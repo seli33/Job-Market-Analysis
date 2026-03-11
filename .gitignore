@@ -1,6 +1,7 @@
 # Virtual Environment
 venv/
 env/
+.env/
 .env
 
 # Python cache
@@ -9,6 +10,7 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+.ipynb_checkpoints/
 
 # Data files (raw and processed - can be large)
 data/raw/
