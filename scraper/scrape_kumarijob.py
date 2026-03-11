@@ -132,7 +132,7 @@ def scrape_all(max_pages=3):
 
     # Save to CSV
     os.makedirs("data/raw", exist_ok=True)
-    filename = f"data/raw/kumarijob_{datetime.now().strftime('%Y%m%d')}.csv"
+    filename = f"data/raw/kumarijob_info.csv"
     df.to_csv(filename, index=False)
     print(f"Saved {after} jobs to {filename}")
 

@@ -57,3 +57,5 @@ airflow.db
 dist/
 build/
 *.egg-info/
+
+job_analysis/
