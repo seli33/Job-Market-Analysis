@@ -7,10 +7,12 @@ from sqlalchemy import create_engine,text
 
 load_dotenv()
 
+
 DB_URL=(
     f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
     f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 )
+
 
 def load_jobs(df,engine):
     """load jobs into jobs table"""
@@ -29,7 +31,7 @@ def load_jobs(df,engine):
 
     jobs_df.to_sql(
         'jobs', 
-        'engine',
+        engine,
         if_exists='append',
         index=False
     )
@@ -60,4 +62,4 @@ if __name__ == "__main__":
     load_jobs(df, engine)
     verify_load(engine)
 
-    print("\nDone!")
+    print("\nDone")
