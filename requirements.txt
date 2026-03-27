@@ -1,8 +1,6 @@
 pandas
-numpy
 requests
 beautifulsoup4
 sqlalchemy
-psycopg2
+psycopg2-binary
 python-dotenv
-re
