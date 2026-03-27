@@ -1,18 +1,20 @@
-#  Nepal Job Market Analytics
+# Nepal Job Market Analytics
 
-A end-to-end data engineering project that scrapes job postings from Nepali job boards, cleans and transforms the data, loads it into a PostgreSQL database, and generates insights about the local job market.
+An end-to-end **data engineering project** that collects, processes, and analyzes job postings from Nepali job boards using a structured ETL pipeline.
+
+The system extracts raw job data from the web, transforms it into a clean and normalized format, loads it into a relational database, and generates insights through SQL and visualization tools.
 
 ---
 
-##  Project Goal
+## Project Overview
 
-Answer real questions about the Nepal job market:
+This project is designed to answer key questions about the Nepal job market:
 
-- What are the most in-demand job roles in Nepal?
-- Which cities have the most job openings?
-- Which companies are hiring the most?
-- What seniority levels are most common?
-- Which industries are growing?
+* What are the most in-demand job roles?
+* Which cities have the highest job concentration?
+* Which companies are hiring the most?
+* What seniority levels dominate the market?
+* Which industries show growth trends?
 
 ---
 
@@ -22,85 +24,108 @@ Answer real questions about the Nepal job market:
 Web Source (KumariJob)
         │
         ▼
-  [ Scraper Layer ]          Python + BeautifulSoup
-  scraper/scrape_kumarijobs.py
-        │
-        ▼ CSV (raw)
-  [ ETL Layer ]              Python + Pandas + Regex
-  etl/etl_cleaning.ipynb
-        │
-        ▼ CSV (clean)
-  [ Database Layer ]         PostgreSQL
-  database/schema.sql
-  database/load_data.py
+[ Extract Layer ]
+Requests + BeautifulSoup
         │
         ▼
-  [ Analytics Layer ]        SQL
-  analysis/queries.sql
+Raw Data (CSV)
         │
         ▼
-  [ Visualization Layer ]    Power BI
-  dashboard/
+[ Transform Layer ]
+Pandas + Regex (Data Cleaning & Normalization)
+        │
+        ▼
+Processed Data (CSV)
+        │
+        ▼
+[ Load Layer ]
+SQLAlchemy → PostgreSQL
+        │
+        ▼
+[ Analytics Layer ]
+SQL Queries
+        │
+        ▼
+[ Visualization Layer ]
+Power BI Dashboard
 ```
 
 ---
 
-##  Folder Structure
+## Key Features
+
+* End-to-end ETL pipeline (Extract → Transform → Load)
+* Modular project structure with clear separation of concerns
+* Web scraping using BeautifulSoup and Requests
+* Data cleaning and normalization using Pandas
+* Relational database design using PostgreSQL
+* Analytical querying using SQL
+* Interactive dashboard using Power BI
+* Environment-based configuration using `.env`
+
+---
+
+## Folder Structure
 
 ```
 job-market-analysis/
 │
 ├── data/
-│   ├── raw/                    # Raw scraped CSVs (gitignored)
-│   └── processed/              # Cleaned CSVs (gitignored)
+│   ├── raw/                    # Raw scraped data (gitignored)
+│   └── processed/              # Cleaned datasets (gitignored)
 │
-├── scraper/
-│   ├── inspect_kumarijob.py    # Inspect site HTML structure
-│   ├── inspect_category.py     # Inspect category page structure
-│   ├── verify_scraper.py       # Verify selectors work
-│   └── scrape_kumarijobs.py    # Main scraper
+├── scraper/                    # Extraction layer
+│   ├── scrape_kumarijobs.py
+│   ├── inspect_kumarijob.py
+│   ├── inspect_category.py
+│   └── verify_scraper.py
 │
-├── etl/
-│   ├── etl_cleaning.ipynb      # Full ETL cleaning notebook
-│   └── explore.py              # EDA profiling script
+├── etl/                        # Transformation layer
+│   ├── clean.py                # Production ETL script
+│   └── etl_cleaning.ipynb      # Exploratory notebook
 │
-├── database/
-│   ├── schema.sql              # PostgreSQL table definitions
-│   └── load_data.py            # Load clean CSV into database
+├── database/                   # Load layer
+│   ├── schema.sql
+│   └── load_data.py
 │
-├── analysis/
-│   └── queries.sql             # Analytical SQL queries
+├── analysis/                   # Analytics layer
+│   └── queries.sql
 │
-├── dashboard/
-│   └── powerbi.pbix            # Power BI dashboard
+├── dashboard/                  # Visualization layer
+│   └── powerbi.pbix
+│
+├── pipeline/                   # Pipeline orchestration
+│   └── main.py
 │
 ├── notebooks/
-│   └── explore.ipynb           # Exploratory analysis notebook
+│   └── explore.ipynb
 │
-├── .env                        # DB credentials (gitignored)
-├── .env.example                # Credentials template (committed)
-├── .gitignore
+├── config/
+│   └── config.py
+│
+├── .env
+├── .env.example
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-| Layer | Tool |
-|---|---|
-| Scraping | Python, Requests, BeautifulSoup |
-| Data Cleaning | Python, Pandas, NumPy, Regex |
-| Database | PostgreSQL, pgAdmin |
-| DB Connector | SQLAlchemy, psycopg2 |
-| Analytics | SQL |
-| Visualization | Power BI |
-| Environment | Python venv, python-dotenv |
+| Layer           | Tools                           |
+| --------------- | ------------------------------- |
+| Extraction      | Python, Requests, BeautifulSoup |
+| Transformation  | Pandas, NumPy, Regex            |
+| Database        | PostgreSQL                      |
+| ORM / Connector | SQLAlchemy, psycopg2            |
+| Analytics       | SQL                             |
+| Visualization   | Power BI                        |
+| Environment     | python-dotenv                   |
 
 ---
 
-##  Getting Started
+## Getting Started
 
 ### 1. Clone the repository
 
@@ -109,7 +134,7 @@ git clone https://github.com/yourusername/job-market-analysis.git
 cd job-market-analysis
 ```
 
-### 2. Create and activate virtual environment
+### 2. Create virtual environment
 
 ```bash
 python -m venv job_analysis
@@ -123,25 +148,33 @@ source job_analysis/bin/activate   # Mac/Linux
 pip install -r requirements.txt
 ```
 
-### 4. Set up environment variables
+### 4. Configure environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your PostgreSQL credentials:
+Update `.env`:
 
 ```env
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=job_market
 DB_USER=postgres
-DB_PASSWORD=your_password_here
+DB_PASSWORD=your_password
 ```
 
-### 5. Set up the database
+---
 
-Open pgAdmin, create a database called `job_market`, then run:
+## Database Setup
+
+Create database:
+
+```bash
+psql -U postgres -c "CREATE DATABASE job_market;"
+```
+
+Run schema:
 
 ```bash
 psql -U postgres -d job_market -f database/schema.sql
@@ -149,159 +182,107 @@ psql -U postgres -d job_market -f database/schema.sql
 
 ---
 
-## ▶️ Running the Pipeline
+## Pipeline Execution
 
-### Step 1 — Scrape jobs
-
-```bash
-python scraper/scrape_kumarijobs.py
-```
-
-Scrapes 7 job categories from KumariJob.com and saves to `data/raw/`.
-
-### Step 2 — Clean the data
-
-Open `etl/etl_cleaning.ipynb` in VSCode and run all cells top to bottom.
-
-Outputs clean CSV to `data/processed/kumarijob_clean.csv`.
-
-### Step 3 — Load into database
+Run the full ETL pipeline:
 
 ```bash
-python database/load_data.py
+python pipeline/main.py
 ```
 
-### Step 4 — Run analytics
+Pipeline stages:
 
-Open pgAdmin and run queries from `analysis/queries.sql`.
+1. Extract job postings from KumariJob
+2. Transform and clean raw data
+3. Load structured data into PostgreSQL
 
 ---
 
-## 📊 Data Schema
+## Data Model
 
-### jobs table
+### jobs
 
-| Column | Type | Description |
-|---|---|---|
-| job_id | SERIAL PRIMARY KEY | Unique job ID |
-| title | TEXT | Cleaned job title |
-| company | TEXT | Company name |
-| location | TEXT | Normalized city |
-| category | TEXT | Job category |
-| seniority | TEXT | Senior / Mid-Level / Junior |
-| job_type | TEXT | Remote / Hybrid / On-site |
-| job_url | TEXT | Link to original posting |
-| scraped_date | DATE | Date scraped |
+| Column       | Description               |
+| ------------ | ------------------------- |
+| job_id       | Primary key               |
+| title        | Cleaned job title         |
+| company      | Company name              |
+| location     | Normalized city           |
+| category     | Job category              |
+| seniority    | Experience level          |
+| job_type     | Remote / Hybrid / On-site |
+| job_url      | Source URL                |
+| scraped_date | Date collected            |
 
-### skills table
+### skills
 
-| Column | Type | Description |
-|---|---|---|
-| skill_id | SERIAL PRIMARY KEY | Unique skill ID |
-| skill_name | TEXT | e.g. Python, SQL, Excel |
+| Column     | Description |
+| ---------- | ----------- |
+| skill_id   | Primary key |
+| skill_name | Skill name  |
 
-### job_skills table
+### job_skills
 
-| Column | Type | Description |
-|---|---|---|
-| job_id | INTEGER | Foreign key → jobs |
-| skill_id | INTEGER | Foreign key → skills |
+| Column   | Description |
+| -------- | ----------- |
+| job_id   | FK → jobs   |
+| skill_id | FK → skills |
 
 ---
 
-## 🔍 Sample Analytics Queries
+## Sample Queries
 
 ```sql
--- Most common job titles
+-- Top job roles
 SELECT title, COUNT(*) AS count
 FROM jobs
 GROUP BY title
 ORDER BY count DESC
 LIMIT 10;
 
--- Jobs per city
+-- Jobs by city
 SELECT location, COUNT(*) AS count
 FROM jobs
 GROUP BY location
 ORDER BY count DESC;
 
--- Jobs per category
-SELECT category, COUNT(*) AS count
-FROM jobs
-GROUP BY category
-ORDER BY count DESC;
-
--- Most hiring companies
+-- Top hiring companies
 SELECT company, COUNT(*) AS openings
 FROM jobs
 GROUP BY company
 ORDER BY openings DESC
 LIMIT 10;
-
--- Seniority distribution
-SELECT seniority, COUNT(*) AS count
-FROM jobs
-GROUP BY seniority
-ORDER BY count DESC;
 ```
 
 ---
 
-## 🌐 Data Source
+## Reliability & Engineering Practices
 
-**KumariJob** (kumarijob.com) — one of Nepal's leading job boards covering categories including IT, accounting, marketing, engineering, digital marketing, content writing, and full stack development.
-
-Categories scraped:
-- IT & Telecommunication
-- Accounting & Finance
-- Sales & Marketing
-- Digital Marketing
-- Engineering
-- Full Stack Development
-- Content Writing
+* Environment-based configuration using `.env`
+* Modular pipeline design for maintainability
+* Data cleaning and normalization rules
+* Structured relational schema design
+* Separation of extraction, transformation, and loading layers
 
 ---
 
-## 🗺️ Roadmap
+## Data Source
 
-- [x] Web scraper for KumariJob
-- [x] ETL cleaning pipeline
-- [ ] PostgreSQL database setup
-- [ ] Load data into database
-- [ ] SQL analytics queries
-- [ ] Power BI dashboard
-- [ ] Automated daily pipeline (Airflow)
-- [ ] Skill extraction from job descriptions
-- [ ] ML job role classifier
+KumariJob (kumarijob.com) — a major Nepali job board covering IT, finance, marketing, engineering, and more.
 
 ---
 
-## 📋 Requirements
+## Future Improvements
 
-```
-requests
-beautifulsoup4
-pandas
-numpy
-sqlalchemy
-psycopg2-binary
-python-dotenv
-selenium
-webdriver-manager
-jupyter
-```
-
-Install all with:
-
-```bash
-pip install -r requirements.txt
-```
+* Automate pipeline scheduling using Apache Airflow
+* Add API-based data ingestion (REST/GraphQL)
+* Implement incremental data loading
+* Containerize using Docker
+* Add data validation and monitoring
+* Use LLMs for skill extraction and text processing
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
-This project scrapes publicly available job listing data for educational and research purposes only. Always respect a website's terms of service and robots.txt. Add delays between requests to avoid overloading servers.
-
----
-
+This project uses publicly available data for educational purposes only. Please respect website terms of service and implement rate limiting when scraping.
