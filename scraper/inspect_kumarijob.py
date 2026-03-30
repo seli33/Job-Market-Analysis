@@ -7,14 +7,14 @@ HEADERS={
                   "Chrome/120.0.0.0 Safari/537.36"
 }
 
+BASE_URL = "https://www.kumarijob.com"
 def inspect():
     url="https://www.kumarijob.com/jobs-in-nepal/ittelecommunication-jobs-in-nepal"
     response=requests.get(url,headers=HEADERS)
+    soup=BeautifulSoup(response.text,"html.parser")
 
     print("status code :",response.status_code)
     print("="*50)
-
-    soup=BeautifulSoup(response.text,"html.parser")
 
     print("page title:",soup.title.text if soup.title else "No title" )
     print("="*50)

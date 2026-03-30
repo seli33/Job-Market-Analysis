@@ -1,0 +1,41 @@
+What we need to do next is inspect a detail page (when you click into one specific job).
+Think of it like this:
+Listing page                    Detail page
+─────────────────               ─────────────────────────────
+kumarijob.com/it-jobs    →      kumarijob.com/company/12345-job-title
+  - job title                     - full description
+  - company                       - salary
+  - location                      - deadline
+                                  - experience required
+                                  - education
+Your current script already gets you the left side. We already have that data (187 jobs). Now we need to go one level deeper into each job.
+So the question is — do you want to add the detail page inspection into your existing script, or write it as a separate file?Q: How do you want to proceed?
+A: First explain what a detail page looks like2:22 PMGreat choice — understanding the structure first makes the code make sense.
+
+When you're on the listing page, each job looks like this in the browser:
+┌─────────────────────────────────────┐
+│  Software QA Engineer               │
+│  Cotiviti Nepal  •  Kathmandu       │
+│  IT & Telecom    •  Full Time       │
+└─────────────────────────────────────┘
+When you click that job, you land on the detail page. It looks something like this:
+┌─────────────────────────────────────────────────────┐
+│  Software QA Engineer                               │
+│  Cotiviti Nepal                                     │
+├─────────────────────────────────────────────────────┤
+│  Salary      │  Rs. 50,000 - 80,000                 │
+│  Deadline    │  April 30, 2026                      │
+│  Experience  │  2+ years                            │
+│  Education   │  Bachelor's Degree                   │
+├─────────────────────────────────────────────────────┤
+│  Job Description                                    │
+│  We are looking for a QA Engineer to join...        │
+│  Responsibilities:                                  │
+│    - Write test cases                               │
+│    - ...                                            │
+│  Requirements:                                      │
+│    - Python, Selenium                               │
+│    - ...                                            │
+└─────────────────────────────────────────────────────┘
+
+All of that extra information — salary, deadline, description — only exists on the detail page. It's not on the listing page at all.
